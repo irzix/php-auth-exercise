@@ -27,7 +27,7 @@ if ($_POST) {
             header("Location: /dashboard");
             exit;
         } else {
-            $error = "Contact Suppport";
+            $error = $result['error'] ?? "Contact Support";
         }
     }
 }

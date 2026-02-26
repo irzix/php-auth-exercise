@@ -14,6 +14,12 @@ class User
     public function save($data)
     {
         try {
+            $existing = $this->db->prepare("SELECT id FROM users WHERE email = :email LIMIT 1");
+            $existing->execute([':email' => $data['email']]);
+            if ($existing->fetch()) {
+                return array('status' => false, 'id' => null, 'error' => 'This email is already registered.');
+            }
+
             $password = password_hash($data['password'], PASSWORD_DEFAULT);
             $register = $this->db->prepare("INSERT INTO users (fname, lname, country, prefix, phone, email, password) VALUES (:fname, :lname, :country, :prefix, :phone, :email, :password)");
             $register->execute([
@@ -27,7 +33,7 @@ class User
             ]);
             return array('status' => true, 'id' => $this->db->lastInsertId());
         } catch (\Throwable $th) {
-            return array('status' => false, 'id' => null);
+            return array('status' => false, 'id' => null, 'error' => 'Unable to create account right now.');
         }
     }
 

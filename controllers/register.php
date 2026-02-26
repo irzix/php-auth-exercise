@@ -18,11 +18,13 @@ if ($_POST) {
     $validate = $validator->register($_POST);
     if (!$validate[0]) {
         $error = $validate[1];
+        return;
     } else {
         $user = new User($pdo);
         $result = $user->save($_POST);
-        if ($result) {
-            header("Location: /login");
+        if ($result['status']) {
+            $_SESSION['user_id'] = $result['id'];
+            header("Location: /dashboard");
             exit;
         } else {
             $error = "Contact Suppport";

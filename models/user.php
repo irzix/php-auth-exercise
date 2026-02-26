@@ -25,9 +25,9 @@ class User
                 ':email' => $data['email'],
                 ':password' => $password
             ]);
-            return true;
+            return array('status' => true, 'id' => $this->db->lastInsertId());
         } catch (\Throwable $th) {
-            return false;
+            return array('status' => false, 'id' => null);
         }
     }
 

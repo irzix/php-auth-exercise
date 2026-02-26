@@ -1,4 +1,11 @@
+<?php
 
+if(!isset($_SESSION["user_id"]) || $_SESSION["user_id"] == "") {
+    header("Location: /login");
+    exit;
+}
+
+?>
 
 <h1>You are logged in</h1>
 
